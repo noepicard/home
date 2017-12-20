@@ -20,7 +20,6 @@ Plug 'morhetz/gruvbox'
 Plug 'wincent/pinnacle'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'itchyny/lightline.vim'
-Plug 'ap/vim-buftabline'
 Plug 'Shougo/neocomplete'
 Plug 'scrooloose/nerdcommenter'
 Plug 'jiangmiao/auto-pairs'
@@ -39,32 +38,24 @@ call plug#end()
 "                                "
 """"""""""""""""""""""""""""""""""
 "{{{
-set mouse=
-set ttymouse=
-set laststatus=2
-set ttyfast
-set timeout timeoutlen=3000 ttimeoutlen=0
-set title
-set cursorline
-set number relativenumber
-set hidden
-set noshowmode
-set laststatus=2
-set tabstop=4 shiftwidth=4 expandtab
-set textwidth=0
-set wrapmargin=0
 set encoding=utf-8
-set showcmd
+set ttyfast mouse= ttymouse=
+set timeoutlen=3000 ttimeoutlen=10
+set title cursorline number relativenumber
+set hidden
 set clipboard=unnamedplus
-set list
-set showbreak=↪
-set listchars=tab:→\ ,eol:↲,nbsp:␣,trail:•,extends:⟩,precedes:⟨
-set fillchars+=vert:\ 
-set background=dark
-set termguicolors
 set wildmenu
 set wildmode=longest:full,full
 set foldmethod=marker
+set tabstop=4 shiftwidth=4 expandtab
+set textwidth=0 wrapmargin=0
+
+set noshowmode showcmd laststatus=2
+set showbreak=↪
+set list listchars=tab:→\ ,eol:↲,nbsp:␣,trail:•,extends:⟩,precedes:⟨
+set fillchars+=vert:\ 
+set background=dark
+set termguicolors
 
 let mapleader = ","
 let maplocalleader = ";"
@@ -85,6 +76,7 @@ augroup latex-autogroup
     au FileType tex setl foldexpr=vimtex#fold#level(v:lnum)
     au FileType tex setl foldtext=vimtex#fold#text()
     au FileType tex setl fillchars+=fold:\ 
+    au FileType tex setl showbreak=
     au FileType tex setl formatexpr=OneLineOneSentenceExpr(v:lnum,v:lnum+v:count-1)
     au FileType tex setl spell
 augroup END
@@ -105,6 +97,7 @@ au FileType qf setlocal nowrap
 let g:buftabline_show = 1
 let g:buftabline_numbers = 1
 let g:buftabline_indicators = 1
+let g:buftabline_modified_indicator = '✱'
 
 " Lightline config {{{
 let g:lightline = {
@@ -124,25 +117,20 @@ let g:lightline = {
         \     'left': [
         \         [ 'fileinfo' ]
         \     ],
-        \     'right': [
-        \         [ 'lineinfo' ],
-        \         [ 'percent' ],
-        \     ]
+        \     'right': [ ]
         \ },
         \ 'component_visible_condition': {
-        \     'modified': '&modified||!&modifiable',
-        \     'readonly': '&readonly',
         \     'paste': '&paste',
+        \     'readonly': '&readonly',
         \     'spell': '&spell',
         \ },
         \ 'component_function': {
+        \     'mode': 'LightlineMode',
         \     'readonly': 'LightlineReadonly',
         \     'dir': 'LightlineDir',
         \ },
         \ 'component': {
-        \     'mode': '%{lightline#mode()}',
-        \     'fileinfo': '%<%t%{&modified?" +":""} [%{&ft!=#""?&ft:"no ft"}]',
-        \     'fileencoding': '%{&fenc!=#""?&fenc:&enc} [%{&ff}]',
+        \     'fileinfo': '%<%{LightlineFileinfo()}',
         \     'percent': '☰ %3p%%',
         \     'spell': '✔ %{&spell?&spelllang:""}',
         \     'lineinfo': ' %3l:%-3v'
@@ -162,18 +150,34 @@ let g:lightline = {
         \ },
         \ }
 
+function! LightlineMode()
+    let fname = expand('%:t')
+    return &ft == 'qf' ? 'QuickFix' :
+                \ &ft == 'nerdtree' ? 'NERDTree' :
+                \ lightline#mode()
+endfunction
+
 function! LightlineDir()
-    return &filetype !=# 'help' ? pathshorten(fnamemodify(expand("%:h"), ":~")) : ''
+    return &ft !~# '\v(help|nerdtree|qf)' ? pathshorten(fnamemodify(expand("%:h"), ":~")) : ''
 endfunction
 
 function! LightlineReadonly()
-  return &readonly && &filetype !=# 'help' ? '🔒' : ''
+  return &ro && &ft !=# 'help' ? '🔒' : ''
+endfunction
+
+function! LightlineFileinfo()
+    let file_name = expand('%:t')
+    let modified_sign = &modified ? ' ✱' : ''
+    let file_type = &ft !=# '' ? &ft : 'no ft'
+    return &ft !~# '\v(help|nerdtree|qf)' ? file_name.modified_sign.'  ['.file_type.']' : ''
 endfunction
 "}}}
 
 let g:gruvbox_italic = 1
 let g:gruvbox_vert_split = 'bg2'
 
+let loaded_netwr = 1
+let loaded_netrwPlugin = 1
 let NERDTreeMinimalUI = 1
 
 let g:neocomplete#enable_at_startup = 1
@@ -237,8 +241,8 @@ vnoremap <silent> ç {
 vnoremap <silent> à }
 
 " Add line above or below the current line without entering the insert mode
-nnoremap <CR> o<ESC>
-nnoremap <Leader><CR> O<ESC>
+nnoremap <CR> o<Esc>
+nnoremap <Leader><CR> O<Esc>
 
 " Scroll the viewport faster
 nnoremap <C-e> 3<C-e>
@@ -249,10 +253,6 @@ nnoremap y 3<C-y>
 " Delete to the black hole register (thus not cutting)
 nnoremap <Leader>d "_d
 vnoremap <Leader>d "_d
-
-" Go to the end of the line in insert mode
-inoremap a <Esc>A
-nnoremap a <Esc>A
 
 " Toggle spell check
 map <silent> <F4> :setlocal spell!<CR>
@@ -283,6 +283,7 @@ nnoremap <Leader>f :bn<CR>
 
 
 
+"
 """"""""""""""""""""""""""""""""""
 "                                "
 "       Other config             "
@@ -291,11 +292,12 @@ nnoremap <Leader>f :bn<CR>
 "{{{
 colorscheme gruvbox
 
+" Some resets due to the colorscheme
 if !has("gui_running")
     " Set the highlighting for spell error (necessary due to the termguicolors)
-    hi SpellBad term=underline cterm=underline gui=undercurl
-    hi SpellCap term=reverse cterm=reverse gui=undercurl
-    hi SpellLocal term=underline cterm=underline gui=undercurl
-    hi SpellRare term=reverse cterm=reverse gui=undercurl
+    hi SpellBad cterm=underline
+    hi SpellCap cterm=reverse
+    hi SpellLocal cterm=underline
+    hi SpellRare cterm=reverse
 endif
 "}}}
