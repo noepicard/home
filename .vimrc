@@ -40,7 +40,6 @@ set termguicolors
 let mapleader = ","
 let maplocalleader = ";"
 
-2mat ColorColumn '\%101v.' "highlight the 101nth character
 
 function! OneLineOneSentenceExpr(start, end)
     silent execute a:start.','.a:end.'s/[.!?]\zs /\r/g'
@@ -49,25 +48,37 @@ endfunction
 " Restore default behaviour when leaving Vim.
 autocmd VimLeave * silent !stty ixon
 
-augroup latex-autogroup
-    au!
-    au FileType tex call clearmatches()
-    au FileType tex setl shiftwidth=2
-    au FileType tex setl linebreak
-    au FileType tex setl textwidth=9999999
-    au FileType tex setl foldmethod=expr
-    au FileType tex setl foldexpr=vimtex#fold#level(v:lnum)
-    au FileType tex setl foldtext=vimtex#fold#text()
-    au FileType tex setl fillchars+=fold:\ 
-    au FileType tex setl showbreak=
-    au FileType tex setl formatexpr=OneLineOneSentenceExpr(v:lnum,v:lnum+v:count-1)
-    au FileType tex setl spell
-    au FileType tex setl spelllang=en,fr
+augroup ErrorHighlighting
+    autocmd!
+    "autocmd WinEnter,BufEnter * call clearmatches()
+    " Highlight the 101nth character
+    autocmd WinEnter,BufEnter * call clearmatches()|
+                \ if &ft!~?'tex'|call matchadd('ErrorMsg', '\%101v.', -1)|endif
+    " Remove trailing spaces highlighting in insert mode
+    autocmd InsertEnter * silent! call matchdelete(w:trailid)
+    " Highlight trailing spaces
+    autocmd WinEnter,BufEnter,InsertLeave * let w:trailid=matchadd('ErrorMsg', '\s\+$', -1)
+augroup END
+
+" Some configuration when editing a LaTeX file
+augroup LatexFileConfiguration
+    autocmd!
+    autocmd BufEnter *.tex,*.bib,*.sty setl shiftwidth=2
+    autocmd BufEnter *.tex,*.bib,*.sty setl linebreak
+    autocmd BufEnter *.tex,*.bib,*.sty setl textwidth=9999999
+    autocmd BufEnter *.tex,*.bib,*.sty setl foldmethod=expr
+    autocmd BufEnter *.tex,*.bib,*.sty setl foldexpr=vimtex#fold#level(v:lnum)
+    autocmd BufEnter *.tex,*.bib,*.sty setl foldtext=vimtex#fold#text()
+    autocmd BufEnter *.tex,*.bib,*.sty setl fillchars+=fold:\ 
+    autocmd BufEnter *.tex,*.bib,*.sty setl showbreak=
+    autocmd BufEnter *.tex,*.bib,*.sty setl formatexpr=OneLineOneSentenceExpr(v:lnum,v:lnum+v:count-1)
+    autocmd BufEnter *.tex,*.bib,*.sty setl spell
+    autocmd BufEnter *.tex,*.bib,*.sty setl spelllang=en,fr
 augroup END
 
 au FileType nerdtree setlocal nolist
 
-au FileType qf setlocal nowrap 
+au FileType qf setlocal nowrap
 "}}}
 
 
@@ -110,7 +121,7 @@ let g:lightline = {
             \     ],
             \     'right': [
             \         [ 'lineinfo' ],
-            \         [ 'percent' ], 
+            \         [ 'percent' ],
             \     ]
             \ },
             \ 'inactive': {
@@ -118,6 +129,10 @@ let g:lightline = {
             \         [ 'fileinfo' ]
             \     ],
             \     'right': [ ]
+            \ },
+            \ 'tabline': {
+            \     'left': [ [ 'tabs' ] ],
+            \     'right': []
             \ },
             \ 'component_visible_condition': {
             \     'paste': '&paste',
@@ -131,7 +146,7 @@ let g:lightline = {
             \ },
             \ 'component': {
             \     'fileinfo': '%<%{LightlineFileinfo()}',
-            \     'percent': '☰ %3p%%',
+            \     'percent': '☰ %2p%%',
             \     'spell': '✔ %{&spell?&spelllang:""}',
             \     'lineinfo': ' %3l:%-3v'
             \ },
@@ -180,11 +195,11 @@ colorscheme gruvbox
 
 " Some highlighting resets due to the colorscheme
 if !has("gui_running")
-    " Set the highlighting for spell error (necessary due to the termguicolors)
+" Set the highlighting for spell error (necessary due to the termguicolors)
     hi SpellBad cterm=underline
-    hi SpellCap cterm=reverse
+    hi SpellCap cterm=underline
     hi SpellLocal cterm=underline
-    hi SpellRare cterm=reverse
+    hi SpellRare cterm=underline
 endif
 "}}}
 
@@ -237,18 +252,28 @@ vnoremap <Leader>d "_d
 map <silent> <F5> :setl spell!<CR>
 
 " Remove the highlighting until next search
-nnoremap <F3> :nohlsearch<CR>
+"nnoremap <F3> :nohlsearch<CR>
+nnoremap <silent> <F3> :silent! nohls<cr>
 
 nnoremap <C-n> :NERDTreeToggle<CR>
-
+ 
 " Plugin key-mappings.
 inoremap <expr> <C-g> neocomplete#undo_completion()
 inoremap <expr> <C-l> neocomplete#complete_common_string()
-inoremap <expr> <Nul> neocomplete#start_manual_complete()
+inoremap <silent><expr> <Nul>
+            \ pumvisible() ? "\<C-n>" :
+            \ <SID>check_back_space() ? "\<Nul>" :
+            \ neocomplete#start_manual_complete()
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <C-h> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr> <BS> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <silent> <CR> <C-r>=<SID>neocomplete_cr_function()<CR>
+
+function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
 
 function! s:neocomplete_cr_function() abort
     return pumvisible() ? "\<C-y>" : "\<CR>"
