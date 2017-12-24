@@ -6,6 +6,7 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'morhetz/gruvbox'
 Plug 'itchyny/lightline.vim'
+Plug 'wincent/command-t'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'Shougo/neocomplete'
 Plug 'scrooloose/nerdcommenter'
@@ -28,7 +29,7 @@ set wildmenu
 set wildmode=longest:full,full
 set foldmethod=marker
 set tabstop=4 shiftwidth=4 expandtab
-set textwidth=0 wrapmargin=0
+set nowrap textwidth=0 wrapmargin=0
 
 set noshowmode showcmd laststatus=2
 set showbreak=↪
@@ -86,6 +87,12 @@ au FileType qf setlocal nowrap
 "let loaded_netwr = 1
 "let loaded_netrwPlugin = 1
 let NERDTreeMinimalUI = 1
+
+let g:CommandTMaxHeight = 30
+let g:CommandTMaxFiles = 400000
+if &term =~ "xterm" || &term =~ "screen"
+    let g:CommandTCancelMap = ['<ESC>', '<C-c>']
+endif
 
 let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#enable_smart_case = 1
