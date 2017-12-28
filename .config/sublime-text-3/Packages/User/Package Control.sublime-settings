@@ -1,0 +1,21 @@
+{
+	"bootstrapped": true,
+	"in_process_packages":
+	[
+	],
+	"installed_packages":
+	[
+		"AlignTab",
+		"BracketHighlighter",
+		"ExpandRegion",
+		"gruvbox",
+		"Language - French - Français",
+		"LaTeX-cwl",
+		"LaTeXTools",
+		"Package Control",
+		"PackageResourceViewer",
+		"ScalaFormat",
+		"Solarized Color Scheme",
+		"Terminal"
+	]
+}

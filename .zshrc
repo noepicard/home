@@ -18,3 +18,5 @@ source $ZSH/oh-my-zsh.sh
 source $HOME/.zsh/aliases
 source $HOME/.zsh/exports
 source $HOME/.zsh/path
+
+stty -ixon
