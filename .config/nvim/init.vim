@@ -1,14 +1,13 @@
 " Section: Plugins initialization {{{1
 " ------------------------------------
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'morhetz/gruvbox'
 Plug 'itchyny/lightline.vim'
-
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'Shougo/neocomplete'
 Plug 'scrooloose/nerdcommenter'
 Plug 'jiangmiao/auto-pairs'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'rhysd/vim-grammarous', { 'for': 'tex' }
 Plug 'Konfekt/FastFold', { 'for': 'tex' }
 Plug 'lervag/vimtex', { 'for': 'tex' }
@@ -18,7 +17,6 @@ call plug#end()
 " Section: Options {{{1
 " ---------------------
 
-set nocompatible
 set termencoding=utf-8
 set encoding=utf-8
 set ttyfast
@@ -33,7 +31,7 @@ set incsearch
 set number
 set relativenumber
 set hidden
-set clipboard=unnamedplus
+set clipboard+=unnamedplus
 set wildmenu
 set wildmode=longest:full,full
 set foldmethod=marker
@@ -50,7 +48,6 @@ set list listchars=tab:→\ ,eol:↲,nbsp:␣,trail:•,extends:⟩,precedes:⟨
 set background=dark
 set termguicolors
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip
-set noruler
 
 let mapleader = " "
 let maplocalleader = ";"
@@ -59,22 +56,15 @@ let maplocalleader = ";"
 let g:ctrlp_map = '<Leader>p'
 let g:ctrlp_cmd = 'CtrlPCurWD'
 let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
-"let g:ctrlp_buffer_func = {
-      "\ 'enter': 'HideStatusLine',
-      "\ 'exit': 'RestoreStatusLine'
-      "\ }
 
-function! HideStatusLine()
-  let g:laststatus_last_value=&laststatus
-  set laststatus=0
-endfunction
-
-function! RestoreStatusLine()
-  let &laststatus=g:laststatus_last_value
-endfunction
-
-let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#enable_smart_case = 1
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_smart_case = 1
+if exists('g:vimtex#re#deoplete')
+  if !exists('g:deoplete#omni#input_patterns')
+    let g:deoplete#omni#input_patterns = {}
+  endif
+  let g:deoplete#omni#input_patterns.tex = g:vimtex#re#deoplete
+endif
 
 let g:fastfold_savehook = 1
 
@@ -88,12 +78,6 @@ let g:vimtex_complete_close_braces = 1
 let g:vimtex_compiler_latexmk = {
       \ 'build_dir' : 'out',
       \}
-if !exists('g:neocomplete#sources#omni#input_patterns')
-  let g:neocomplete#sources#omni#input_patterns = {}
-endif
-if exists('g:vimtex#re#neocomplete')
-  let g:neocomplete#sources#omni#input_patterns.tex = g:vimtex#re#neocomplete
-endif
 
 let g:gruvbox_italic = 1
 let g:gruvbox_vert_split = 'bg2'
@@ -138,6 +122,8 @@ let g:lightline = {
       \     'spell': '✔ %{&spell?&spelllang:""}',
       \     'lineinfo': ' %3l:%-3v'
       \ },
+      \ 'separator': { 'left': '', 'right': '' },
+      \ 'subseparator': { 'left': '', 'right': '' },
       \ 'mode_map': {
       \     'n' : 'N',
       \     'i' : 'I',
@@ -214,8 +200,8 @@ nnoremap <Leader><CR> O<Esc>
 " Scroll the viewport faster
 nnoremap <C-e> 3<C-e>
 nnoremap <C-y> 3<C-y>
-nnoremap e 3<C-e>
-nnoremap y 3<C-y>
+nnoremap <M-e> 3<C-e>
+nnoremap <M-y> 3<C-y>
 
 " Delete to the black hole register (thus not cutting)
 nnoremap <Leader>d "_d
@@ -228,32 +214,28 @@ map <silent> <F5> :setl spell!<CR>
 "nnoremap <F3> :nohlsearch<CR>
 nnoremap <silent> <F3> :silent! nohls<cr>
 
-nnoremap <C-n> :NERDTreeToggle<CR>
-
 " Plugin key-mappings.
-inoremap <expr> <C-g> neocomplete#undo_completion()
-inoremap <expr> <C-l> neocomplete#complete_common_string()
-inoremap <silent><expr> <Nul>
+inoremap <expr> <C-g> deoplete#undo_completion()
+inoremap <expr> <C-l> deoplete#complete_common_string()
+inoremap <silent><expr> <C-Space>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<Nul>" :
-      \ neocomplete#start_manual_complete()
+      \ deoplete#mappings#manual_complete()
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr> <BS> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <silent> <CR> <C-r>=<SID>neocomplete_cr_function()<CR>
+inoremap <expr> <BS> deoplete#smart_close_popup()."\<C-h>"
+inoremap <silent> <CR> <C-r>=<SID>deoplete_cr_function()<CR>
 
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~ '\s'
 endfunction
 
-function! s:neocomplete_cr_function() abort
+function! s:deoplete_cr_function() abort
   return pumvisible() ? "\<C-y>" : "\<CR>"
 endfunction
 
 " Buffers stuff
-nnoremap  <C-^>
 nnoremap <Leader>bb :ls<CR>:b<Space>
 nnoremap <silent> <Leader>n :bn<CR>
 nnoremap <silent> <Leader>v :bp<CR>
@@ -266,16 +248,13 @@ nnoremap <Leader>g <Plug>(grammarous-open-info-window)
 " --------------------------
 
 if has("autocmd")
-  augroup NERDTreeAU
-    autocmd!
-    autocmd FileType nerdtree setlocal nolist
-  augroup END
+  filetype plugin indent on
 
   augroup ErrorsHighlighting
     autocmd!
     autocmd WinEnter,BufEnter * call clearmatches() |
           \ call matchadd('ErrorMsg', '\s\+$', 100) |
-    autocmd WinEnter,BufEnter * if &filetype != 'tex' |
+    autocmd WinEnter,BufEnter * if &filetype !~# '\v(tex|qf|help)' |
           \ call matchadd('ErrorMsg', '\%101v.', 100) |
           \ endif
   augroup END
@@ -302,12 +281,4 @@ endif
 
 colorscheme gruvbox
 
-" Some highlighting resets due to the colorscheme
-if !has("gui_running")
-  " Set the highlighting for spell error (necessary due to the termguicolors)
-  hi SpellBad cterm=underline
-  hi SpellCap cterm=underline
-  hi SpellLocal cterm=underline
-  hi SpellRare cterm=underline
-endif
 " }}}1

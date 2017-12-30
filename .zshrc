@@ -12,7 +12,7 @@ plugins=(git dnf mvn z adb)
 setopt autocd # .. is shortcut for cd .. (etc)
 setopt autoparamslash # tab completing directory appends a slash
 setopt sharehistory # share history across shells
-
+setopt complete_aliases
 
 source $ZSH/oh-my-zsh.sh
 source $HOME/.zsh/aliases

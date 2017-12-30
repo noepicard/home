@@ -17,6 +17,7 @@
 	"dpi_scale": 1.1,
 	"draw_centered": true,
 	"font_size": 10,
+	"font_face": "Hack",
 	"highlight_line": true,
 	"ignored_packages":
 	[
