@@ -4,9 +4,10 @@
 call plug#begin('~/.vim/plugged')
 Plug 'morhetz/gruvbox'
 Plug 'itchyny/lightline.vim'
-Plug 'ctrlpvim/ctrlp.vim'
+Plug '/usr/bin/fzf'
+Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-unimpaired'
-Plug 'scrooloose/nerdcommenter'
+Plug 'tpope/vim-commentary'
 Plug 'maralla/completor.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'rhysd/vim-grammarous', { 'for': 'tex' }
@@ -67,9 +68,21 @@ let &t_SR = "\<Esc>[4 q"
 let &t_EI = "\<Esc>[2 q"
 
 " Plugins settings {{{2
-let g:ctrlp_map = '<Leader>p'
-let g:ctrlp_cmd = 'CtrlPCurWD'
-let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
+" Customize fzf colors to match your color scheme
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
 
 let g:fastfold_savehook = 1
 
@@ -117,6 +130,22 @@ colorscheme gruvbox
 
 map & [
 map é ]
+
+nmap <Leader>p :Files<CR>
+nmap <Leader>b :Buffers<CR>
+
+" Turn off linewise keys. Normally, the `j' and `k' keys move the cursor down one entire line. with
+" line wrapping on, this can cause the cursor to actually skip a few lines on the screen because
+" it's moving from line N to line N+1 in the file. I want this to act more visually -- I want `down'
+" to mean the next line on the screen
+nmap j gj
+nmap k gk
+
+" Super fast window movement shortcuts
+nmap <C-j> <C-W>j
+nmap <C-k> <C-W>k
+nmap <C-h> <C-W>h
+nmap <C-l> <C-W>l
 
 " Disable Arrow keys in Escape mode
 noremap <up> <Nop>
@@ -168,12 +197,10 @@ map <silent> <F5> :setl spell!<CR>
 nnoremap <silent> <F3> :set hlsearch!<cr>
 
 " Buffers stuff
-nnoremap <silent> <Leader>o :CtrlPBuffer<CR>
 nnoremap  <C-^>
-nnoremap <Leader>bb :ls<CR>:b<Space>
+
 nnoremap <silent> <Leader>n :bn<CR>
 nnoremap <silent> <Leader>v :bp<CR>
-nnoremap <silent> <Leader>bd :bd<CR>
 
 nnoremap <Leader>g <Plug>(grammarous-open-info-window)
 
@@ -187,6 +214,7 @@ inoremap <expr> <CR> pumvisible() ? "\<C-y>\<CR>" : "\<CR>"
 if has('autocmd')
   filetype plugin indent on
 
+  " Highlight too long lines and trailing spaces
   augroup ErrorsHighlighting
     autocmd!
     autocmd WinEnter,BufEnter * call clearmatches() |
@@ -196,6 +224,7 @@ if has('autocmd')
           \ endif
   augroup END
 
+  " Custom spell highlighting
   augroup FixSpellHighlighting
     autocmd!
     autocmd VimEnter * hi SpellBad cterm=underline
@@ -211,24 +240,25 @@ if has('autocmd')
     autocmd FileType help nnoremap <buffer><BS> <c-T>
     autocmd FileType help nnoremap <buffer>q :q<CR>
     autocmd FileType help set nonumber
-    "autocmd FileType help wincmd _ " Maximze the help on open
+    autocmd FileType help wincmd _ " Maximze the help on open
   augroup END
 
   " Some configuration when editing a LaTeX file
   augroup TexFileType
     autocmd!
+    autocmd FileType tex set showbreak=
+    autocmd FileType tex set fillchars=vert:\|,fold:\ 
+    autocmd FileType tex set wildignore+=*/out/*
     autocmd FileType tex setlocal wrap
     autocmd FileType tex setlocal linebreak
     autocmd FileType tex setlocal formatoptions+=l
     autocmd FileType tex setlocal foldmethod=expr
     autocmd FileType tex setlocal foldexpr=vimtex#fold#level(v:lnum)
     autocmd FileType tex setlocal foldtext=vimtex#fold#text()
-    autocmd FileType tex setlocal showbreak=
-    autocmd FileType tex set fillchars=vert:\|,fold:\ 
     autocmd FileType tex setlocal spell
     autocmd FileType tex setlocal spelllang=en,fr
-    autocmd FileType tex set wildignore+=*/out/*
   augroup END
+
 endif
 
 " }}}1
