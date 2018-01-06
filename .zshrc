@@ -14,5 +14,6 @@ source $ZSH/oh-my-zsh.sh
 source $HOME/.zsh/aliases
 source $HOME/.zsh/exports
 source $HOME/.zsh/path
+# source $HOME/.vim/plugged/gruvbox/gruvbox_256palette.sh
 
 stty -ixon
