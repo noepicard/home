@@ -53,16 +53,16 @@ set listchars=tab:→\ ,nbsp:␣,trail:•,extends:⟩,precedes:⟨
 set fillchars=vert:┃
 set splitbelow
 set splitright
-set background=dark
-set termguicolors
 set pumheight=10
+set background=dark
+set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,
+set guicursor+=i-ci:ver25-Cursor/lCursor-blinkwait700-blinkoff400-blinkon250,
+set guicursor+=r-cr:hor20-Cursor/lCursor
+set termguicolors
 "}}}
 
 let mapleader = "\<Space>"
 let maplocalleader = ";"
-set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,
-      \i-ci:ver25-Cursor/lCursor-blinkwait700-blinkoff400-blinkon250,
-      \r-cr:hor20-Cursor/lCursor
 let g:gruvbox_italic=1
 colorscheme gruvbox
 
