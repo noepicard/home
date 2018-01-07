@@ -2,7 +2,9 @@ SYSTEM_PATH=$PATH
 unset PATH
 
 PATH=$HOME/.bin
+if [[ $ANDROID_HOME ]]; then
 PATH=$PATH:$ANDROID_HOME/tools
 PATH=$PATH:$ANDROID_HOME/platform-tools
+fi
 PATH=$PATH:$SYSTEM_PATH
 export PATH

@@ -59,13 +59,12 @@ set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,
 set guicursor+=i-ci:ver25-Cursor/lCursor-blinkwait700-blinkoff400-blinkon250,
 set guicursor+=r-cr:hor20-Cursor/lCursor
 set termguicolors
-"}}}
 
 let mapleader = "\<Space>"
 let maplocalleader = ";"
 let g:gruvbox_italic=1
 colorscheme gruvbox
-
+"}}}
 " Plugins settings {{{
 " Customize fzf colors to match your color scheme
 let g:fzf_colors = {

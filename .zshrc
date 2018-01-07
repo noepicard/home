@@ -4,15 +4,17 @@ ZSH_THEME="robbyrussell"
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 plugins=(
-  git
+  zsh-completions
+  zsh-autosuggestions
   dnf
+  git
   mvn
   z
   adb
 )
 
-# Options
-setopt autocd
+fpath=(~/.zsh/completions $fpath)
+autoload -U compinit && compinit
 
 # Sources
 source $ZSH/oh-my-zsh.sh

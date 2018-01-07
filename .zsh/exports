@@ -1,11 +1,4 @@
-# PATH isn't set yet (.zsh/path depends on this file), so we do the following
-# instead of a simple `export EDITOR=$(which vim)`:
-if [ -x "$HOME/bin/vim" ]; then
-    export EDITOR=$HOME/bin/vim
-else
-    export EDITOR=vim
-fi
-
+export EDITOR=/usr/bin/nvim
 export JAVA_HOME=/usr/java/latest
 export M2_HOME=/usr/share/maven
 export ANDROID_HOME=$HOME/Programs/Android/Sdk
