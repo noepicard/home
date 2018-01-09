@@ -3,18 +3,21 @@
 
 call plug#begin('~/.local/share/nvim/plugged')
 Plug 'morhetz/gruvbox'
+" Plug 'nanotech/jellybeans.vim'
+" Plug 'joshdick/onedark.vim'
 Plug 'itchyny/lightline.vim'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf' }
+Plug '/usr/bin/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'jiangmiao/auto-pairs'
+Plug 'junegunn/goyo.vim'
+Plug 'junegunn/limelight.vim'
 Plug 'lervag/vimtex'
 Plug 'rhysd/vim-grammarous', { 'for': 'tex' }
 Plug 'Konfekt/FastFold', { 'for': 'tex' }
-Plug 'junegunn/goyo.vim', { 'for': 'tex' }
 call plug#end()
 
 "}}}
@@ -55,9 +58,6 @@ set splitbelow
 set splitright
 set pumheight=10
 set background=dark
-set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,
-set guicursor+=i-ci:ver25-Cursor/lCursor-blinkwait700-blinkoff400-blinkon250,
-set guicursor+=r-cr:hor20-Cursor/lCursor
 set termguicolors
 
 let mapleader = "\<Space>"
@@ -103,7 +103,10 @@ let g:vimtex_compiler_latexmk = {
       \ 'build_dir': 'out'
       \}
 
-" let g:deoplete#complete_method = 'omnifunc'
+let g:grammarous#disabled_rules = {
+            \ '*' : ['WHITESPACE_RULE', 'EN_QUOTES']
+            \}
+
 if !exists('g:deoplete#omni#input_patterns')
   let g:deoplete#omni#input_patterns = {}
 endif
@@ -113,18 +116,6 @@ let g:lightline = {}
 let g:lightline.colorscheme = 'gruvbox'
 let g:lightline.component = {
       \ 'filename': '%<%t'}
-
-function! s:goyo_enter()
-  set scrolloff=999
-endfunction
-
-function! s:goyo_leave()
-  set scrolloff=4
-endfunction
-
-autocmd! User GoyoEnter nested call <SID>goyo_enter()
-autocmd! User GoyoLeave nested call <SID>goyo_leave()
-
 "}}}
 "}}}
 " Section: Mappings {{{
@@ -167,10 +158,10 @@ vnoremap <silent> <C-S> <C-C>:update<CR>
 inoremap <silent> <C-S> <C-O>:update<CR>
 
 " Paragraph navigation
-nnoremap <silent> ç {
-nnoremap <silent> à }
-vnoremap <silent> ç {
-vnoremap <silent> à }
+nnoremap <silent> ù {
+nnoremap <silent> µ }
+vnoremap <silent> ù {
+vnoremap <silent> µ }
 
 " Scroll the viewport faster
 nnoremap <C-e> 3<C-e>
@@ -199,6 +190,8 @@ nnoremap <Leader>g <Plug>(grammarous-open-info-window)
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+command! ProseMode Goyo 110x85%
 
 "}}}
 " Section: Autocommands {{{
@@ -243,7 +236,6 @@ if has('autocmd')
   " Some configuration when editing a LaTeX file
   augroup TexFileType
     autocmd!
-    autocmd FileType tex set showbreak=
     autocmd FileType tex set fillchars=vert:\|,fold:\ 
     autocmd FileType tex set wildignore+=*/out/*
     autocmd FileType tex setlocal wrap
@@ -256,5 +248,28 @@ if has('autocmd')
     autocmd FileType tex setlocal spelllang=en,fr
   augroup END
 
+
+  function! s:goyo_enter()
+    set background=light
+    set noshowmode
+    set noshowcmd
+    set nolist
+    set showbreak=
+    set scrolloff=999
+    Limelight
+  endfunction
+
+  function! s:goyo_leave()
+    set background=dark
+    set showmode
+    set showcmd
+    set list
+    set showbreak=↪
+    set scrolloff=5
+    Limelight!
+  endfunction
+
+  autocmd! User GoyoEnter nested call <SID>goyo_enter()
+  autocmd! User GoyoLeave nested call <SID>goyo_leave()
 endif
 "}}}
