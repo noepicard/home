@@ -20,6 +20,7 @@ Plug 'rhysd/vim-grammarous', { 'for': 'tex' }
 Plug 'Konfekt/FastFold', { 'for': 'tex' }
 call plug#end()
 "}}}
+
 " Section: Options {{{
 " ---------------------
 " Global settings {{{
@@ -84,6 +85,7 @@ endif
 let mapleader = "\<Space>"
 let maplocalleader = ";"
 
+let g:gruvbox_number_column = 'bg1'
 let g:gruvbox_contrast_light = 'soft'
 let g:gruvbox_italic=1
 colorscheme gruvbox
@@ -143,9 +145,9 @@ let g:deoplete#omni#input_patterns.tex = g:vimtex#re#deoplete
 
 "}}}
 "}}}
+
 " Section: Mappings {{{
 " ----------------------
-
 " Terminal stuff
 command! -nargs=* T split | terminal <args>
 command! -nargs=* VT vsplit | terminal <args>
@@ -158,29 +160,29 @@ nnoremap <C-Left> :vertical resize -1<CR>
 nnoremap <C-Right> :vertical resize +1<CR>
 nnoremap <C-Up> :resize +1<CR>
 nnoremap <C-Down> :resize -1<CR>
-nmap <Up> <Nop>
-nmap <Down> <Nop>
-nmap <Left> <Nop>
-nmap <Right> <Nop>
+nnoremap <Up> <Nop>
+nnoremap <Down> <Nop>
+nnoremap <Left> <Nop>
+nnoremap <Right> <Nop>
 nnoremap <BS> <Nop>
 nnoremap <CR> <Nop>
-imap <Up> <Nop>
-imap <Down> <Nop>
-imap <Left> <Nop>
-imap <Right> <Nop>
+inoremap <Up> <Nop>
+inoremap <Down> <Nop>
+inoremap <Left> <Nop>
+inoremap <Right> <Nop>
 nnoremap j gj
 nnoremap k gk
 vnoremap j gj
 vnoremap k gk
 
-nmap <silent> <Leader>p :Files<CR>
-nmap <silent> <Leader>b :Buffers<CR>
+nnoremap <silent> <Leader>p :Files<CR>
+nnoremap <silent> <Leader>b :Buffers<CR>
 
 " Super fast window movement shortcuts
-nmap <C-j> <C-W>j
-nmap <C-k> <C-W>k
-nmap <C-h> <C-W>h
-nmap <C-l> <C-W>l
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
 
 " Easy saving
 nnoremap <leader>w :w!<CR>
@@ -203,11 +205,8 @@ vnoremap <Leader>d "_d
 nnoremap <Leader>x "_x
 vnoremap <Leader>x "_x
 
-" Toggle spell check
-map <silent> <F5> :setl spell!<CR>
-
 " <Ctrl-l> redraws the screen and removes any search highlighting.
-nnoremap <silent> <C-l> :nohl<CR><C-l>
+nnoremap <silent> <C-n> :nohl<CR>
 
 " Buffers stuff
 nnoremap <Leader>n :bnext!<CR>

@@ -15,6 +15,9 @@ plugins=(
 
 fpath=(~/.zsh/completions $fpath)
 autoload -U compinit && compinit
+autoload colors zsh/terminfo
+colors
+setopt correctall
 
 # Sources
 source $ZSH/oh-my-zsh.sh

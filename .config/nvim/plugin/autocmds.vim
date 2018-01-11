@@ -13,7 +13,7 @@ if has('autocmd')
     autocmd BufEnter,FocusGained,VimEnter,WinEnter *
           \ let &l:colorcolumn=''
     autocmd FocusLost,WinLeave *
-          \ let &l:colorcolumn=join(range(1, 512), ',')
+          \ let &l:colorcolumn=join(range(1, 999), ',')
   endif
 
   " Highlight too long lines and trailing spaces
@@ -45,7 +45,6 @@ if has('autocmd')
   " Some configuration when editing a LaTeX file
   augroup TexFileType
     autocmd!
-    autocmd FileType tex set fillchars=vert:\|,fold:\ 
     autocmd FileType tex set wildignore+=*/out/*
     autocmd FileType tex setlocal wrap
     autocmd FileType tex setlocal linebreak
