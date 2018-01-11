@@ -25,43 +25,41 @@ call plug#end()
 " ---------------------
 
 " Global settings {{{
-set shortmess+=c
-set lazyredraw
-set scrolloff=1
-set clipboard+=unnamedplus
-set sidescrolloff=5
-set autoread
-set title
-set incsearch
-set number
-set relativenumber
-set hidden
-set backspace=indent,eol,start
-set wildmenu
-set wildmode=longest:full,full
-set foldmethod=marker
-set autoindent
-set smarttab
-set tabstop=2
-set shiftwidth=2
-set expandtab
-set smarttab
-set nowrap
-set noshowmode
-set showcmd
-set laststatus=2
-set showbreak=↪
-set list
+set lazyredraw                 " Only redraw when necessary
+set scrolloff=1                " Always keep one line above and below the cursor
+set clipboard+=unnamedplus     " Use the system clipboard
+set autoread                   " Read the changes automatically
+set title                      " Set the title of the window
+set incsearch                  " Incremental search
+set number                     " Set line numbers
+set relativenumber             " Relative numbering from the current line
+set hidden                     " Allow hidden buffers
+set shortmess+=c               " Disable the completion messages
+set backspace=indent,eol,start " Make backspace behaves normally
+set wildmenu                   " Better command line completion
+set wildmode=longest:full,full " Better wild mode for command line completion
+set foldmethod=marker          " Use marker (i.e. triple brackets) to fold code
+set autoindent                 " Keep the indentation of the current line to a new one
+set smarttab                   " Use shiftwidth when using <Tab>
+set tabstop=2                  " Tab size
+set shiftwidth=2               " Identation size
+set expandtab                  " Use space instead of tab
+set nowrap                     " Don't wrap the code according to the window size
+set showcmd                    " Useful for showing pending command
+set laststatus=2               " Always show the status line
+set showbreak=↪                " Character to show when lines are wrapped
+set list                       " Show hidden character
 set listchars=tab:→\ ,nbsp:␣,trail:•,extends:⟩,precedes:⟨
 set fillchars=vert:┃
-set splitbelow
-set splitright
-set pumheight=10
-set background=dark
-set termguicolors
+set splitbelow                 " Split horizontally below
+set splitright                 " Split vertically on the right
+set pumheight=10               " Max size of the completion popup
+set background=dark            " Color of the general background
+set termguicolors              " Use the GUI color inside terminal
 
 let mapleader = "\<Space>"
 let maplocalleader = ";"
+let g:gruvbox_contrast_light = 'soft'
 let g:gruvbox_italic=1
 colorscheme gruvbox
 "}}}
@@ -113,6 +111,8 @@ endif
 let g:deoplete#omni#input_patterns.tex = g:vimtex#re#deoplete
 
 let g:lightline = {}
+let g:lightline.separator = { 'left': '', 'right': '' }
+let g:lightline.subseparator = { 'left': '', 'right': '' }
 let g:lightline.colorscheme = 'gruvbox'
 let g:lightline.component = {
       \ 'filename': '%<%t'}
