@@ -2,9 +2,22 @@ SYSTEM_PATH=$PATH
 unset PATH
 
 PATH=$HOME/.bin
+
 if [[ $ANDROID_HOME ]]; then
-PATH=$PATH:$ANDROID_HOME/tools
-PATH=$PATH:$ANDROID_HOME/platform-tools
+  PATH=$PATH:$ANDROID_HOME/tools
+  PATH=$PATH:$ANDROID_HOME/platform-tools
 fi
+
+if [[ $NODEJS_HOME ]]; then
+  PATH=$PATH:$NODEJS_HOME/bin
+fi
+
+if [[ $NPM_PACKAGES ]]; then
+  PATH=$PATH:$NPM_PACKAGES/bin
+  NODE_PATH=$NPM_PACKAGES/lib/node_modules:$NODE_PATH
+fi
+
 PATH=$PATH:$SYSTEM_PATH
+
+export NODE_PATH
 export PATH

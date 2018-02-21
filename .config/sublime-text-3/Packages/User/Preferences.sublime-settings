@@ -1,8 +1,4 @@
 {
-	"added_words":
-	[
-		"topics"
-	],
 	"auto_complete_triggers":
 	[
 		{
@@ -14,10 +10,11 @@
 			"selector": "text.tex.latex"
 		}
 	],
+	"dictionary": "Packages/Language - French - Français/fr_FR.dic",
 	"dpi_scale": 1.1,
 	"draw_centered": true,
-	"font_size": 10,
-	"font_face": "Hack",
+	"font_face": "Fantasque Sans Mono",
+	"font_size": 12,
 	"highlight_line": true,
 	"ignored_packages":
 	[
@@ -25,8 +22,7 @@
 	],
 	"show_encoding": true,
 	"tab_completion": false,
-	"theme": "Adaptive.sublime-theme",
+	"theme": "Default.sublime-theme",
 	"translate_tabs_to_spaces": true,
-	"trim_trailing_white_space_on_save": true,
-	"wrap_width": 140
+	"trim_trailing_white_space_on_save": true
 }

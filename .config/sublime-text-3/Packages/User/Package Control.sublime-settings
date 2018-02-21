@@ -7,15 +7,13 @@
 	[
 		"AlignTab",
 		"BracketHighlighter",
+		"Exalt",
 		"ExpandRegion",
-		"gruvbox",
 		"Language - French - Français",
 		"LaTeX-cwl",
 		"LaTeXTools",
 		"Package Control",
-		"PackageResourceViewer",
 		"ScalaFormat",
-		"Solarized Color Scheme",
 		"Terminal"
 	]
 }

@@ -1,4 +1,7 @@
 export EDITOR=/usr/bin/nvim
-export JAVA_HOME=/usr/java/latest
+export JAVA_HOME=/usr/lib/jvm/java
 export M2_HOME=/usr/share/maven
-export ANDROID_HOME=$HOME/Programs/Android/Sdk
+export ANDROID_HOME=$HOME/Programs/android/sdk
+#export FZF_DEFAULT_COMMAND='ag -l -g ""'
+export NODEJS_HOME=$HOME/Programs/node
+export NPM_PACKAGES=$HOME/.npm-packages

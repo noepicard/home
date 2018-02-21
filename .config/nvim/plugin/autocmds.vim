@@ -1,27 +1,18 @@
 if has('autocmd')
-  filetype plugin indent on
-
   autocmd! FileType fzf
   autocmd  FileType fzf set laststatus=0 noshowmode noruler
         \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 
   autocmd! TermOpen *
   autocmd TermOpen * setlocal nonumber norelativenumber
-
-  " Make current window more obvious by turning off/adjusting some features in non-current windows.
-  if exists('+colorcolumn')
-    autocmd BufEnter,FocusGained,VimEnter,WinEnter *
-          \ let &l:colorcolumn=''
-    autocmd FocusLost,WinLeave *
-          \ let &l:colorcolumn=join(range(1, 999), ',')
-  endif
+  autocmd TermOpen * call clearmatches()
 
   " Highlight too long lines and trailing spaces
   augroup LongLinesHighlighting
     autocmd!
     autocmd WinEnter,BufEnter * call clearmatches() |
           \ call matchadd('ErrorMsg', '\s\+$', 100) |
-    autocmd WinEnter,BufEnter * if &filetype !~# '\v(tex|qf|help)' |
+    autocmd WinEnter,BufEnter * if ((&filetype !~# '\v(tex|qf|help)') && (&buftype != 'terminal')) |
           \ call matchadd('ErrorMsg', '\%101v.', 100) |
           \ endif
   augroup END
