@@ -1,20 +1,7 @@
 {
-	"auto_complete_triggers":
-	[
-		{
-			"characters": "<",
-			"selector": "text.html"
-		},
-		{
-			"characters": "\\",
-			"selector": "text.tex.latex"
-		}
-	],
-	"dictionary": "Packages/Language - French - Français/fr_FR.dic",
 	"dpi_scale": 1.1,
-	"draw_centered": true,
 	"font_face": "Fantasque Sans Mono",
-	"font_size": 12,
+	"font_size": 11,
 	"highlight_line": true,
 	"ignored_packages":
 	[
@@ -22,7 +9,7 @@
 	],
 	"show_encoding": true,
 	"tab_completion": false,
-	"theme": "Default.sublime-theme",
+	"theme": "Adaptive.sublime-theme",
 	"translate_tabs_to_spaces": true,
 	"trim_trailing_white_space_on_save": true
 }

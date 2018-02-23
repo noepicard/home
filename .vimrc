@@ -1,11 +1,11 @@
 " Section: Plugins initialization {{{
 " ------------------------------------
-call plug#begin('~/.local/share/nvim/plugged')
+call plug#begin('~/.vim/plugged')
 Plug 'morhetz/gruvbox'
 Plug 'itchyny/lightline.vim'
 Plug '/usr/bin/fzf'
 Plug 'junegunn/fzf.vim'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'lifepillar/vim-mucomplete'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
@@ -23,7 +23,11 @@ call plug#end()
 " Global settings {{{
 set lazyredraw                  " Only redraw when necessary
 set scrolloff=1                 " Always keep one line above and below the cursor
-set clipboard+=unnamedplus      " Use the system clipboard
+set clipboard=unnamedplus       " Use the system clipboard
+set ttimeout
+set ttimeoutlen=50
+set completeopt+=menuone
+set completeopt+=noselect
 set mouse=r                     " Enable mouse support only for hit-enter and more-prompt
 set autoread                    " Read the changes automatically
 set title                       " Set the title of the window
@@ -62,12 +66,6 @@ set pumheight=10                " Max size of the completion pop-up
 set background=dark             " Color of the general background
 set termguicolors               " Use the GUI color inside terminal
 set virtualedit=block         " allow cursor to move where there is no text in visual block mode
-if exists('$SUDO_USER')
-  set noundofile              " don't create root-owned files
-else
-  set undodir=~/.local/share/nvim/undo
-  set undofile                " actually use undo files
-endif
 
 let mapleader = "\<Space>"
 let maplocalleader = ";"
@@ -77,9 +75,18 @@ let g:gruvbox_contrast_light = 'soft'
 let g:gruvbox_italic=1
 colorscheme gruvbox
 
-command! -nargs=* T split | terminal <args>
-command! -nargs=* VT vsplit | terminal <args>
 command! ProseMode Goyo 110x85%
+
+let &t_SI = "\<Esc>[6 q"
+let &t_SR = "\<Esc>[4 q"
+let &t_EI = "\<Esc>[2 q"
+
+let c='a'
+while c <= 'z'
+  exec "set <A-".c.">=\e".c
+  exec "imap \e".c." <A-".c.">"
+  let c = nr2char(1+char2nr(c))
+endw
 
 "}}}
 " Plugins settings {{{
@@ -91,7 +98,6 @@ let g:lightline.subseparator = { 'left': '', 'right': '' }
 let g:lightline.component = {
       \ 'filename': '%<%t'
       \ }
-
 
 " Customize fzf colors to match the color scheme
 let g:fzf_colors = {
@@ -111,8 +117,8 @@ let g:fzf_colors = {
       \ }
 let g:fzf_layout = { 'down': '~25%' }
 
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#enable_smart_case = 1
+let g:mucomplete#enable_auto_at_startup = 1
+let g:mucomplete#no_mappings = 0
 
 let g:tex_flavor = 'latex'
 let g:vimtex_view_method = 'zathura'
@@ -134,11 +140,6 @@ let g:grammarous#disabled_rules = {
 
 " Section: Mappings {{{
 " ----------------------
-" Terminal stuff
-nnoremap <Leader>t :T<CR>i
-tnoremap <M-q> <C-\><C-n>
-tnoremap <M-Q> <C-\><C-n>
-
 " Set size
 nnoremap <M-S> :set lines=50 columns=110<CR>
 
@@ -209,8 +210,85 @@ nnoremap <Leader>v :bprev!<CR>
 nnoremap <Leader>g <Plug>(grammarous-open-info-window)
 
 " Better handling of the Popup Menu
-inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
+" inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
+"}}}
+
+" Section: Autocmds {{{
+" ----------------------
+if has('autocmd')
+  " Highlight too long lines and trailing spaces
+  augroup LongLinesHighlighting
+    autocmd!
+    autocmd WinEnter,BufEnter * call clearmatches() |
+          \ call matchadd('ErrorMsg', '\s\+$', 100) |
+    autocmd WinEnter,BufEnter * if ((&filetype !~# '\v(tex|qf|help)') && (&buftype != 'terminal')) |
+          \ call matchadd('ErrorMsg', '\%101v.', 100) |
+          \ endif
+  augroup END
+
+  augroup CursorLine
+    autocmd!
+    autocmd InsertEnter * setlocal cul
+    autocmd InsertLeave * setlocal nocul
+  augroup END
+
+  " Custom spell highlighting
+  augroup FixSpellHighlighting
+    autocmd!
+    autocmd VimEnter * hi SpellBad cterm=underline
+    autocmd VimEnter * hi SpellRare cterm=underline
+    autocmd VimEnter * hi SpellLocal cterm=underline
+    autocmd VimEnter * hi SpellCap cterm=underline
+  augroup END
+
+  " Help File speedups, <enter> to follow tag, delete for back
+  augroup HelpFileType
+    autocmd!
+    autocmd FileType help nnoremap <buffer><CR> <c-]>
+    autocmd FileType help nnoremap <buffer><BS> <c-T>
+    autocmd FileType help nnoremap <buffer>q :q<CR>
+    autocmd FileType help set nonumber
+    autocmd BufWinEnter * if &l:buftype ==# 'help' | wincmd _ | endif
+  augroup END
+
+  " Some configuration when editing a LaTeX file
+  augroup TexFileType
+    autocmd!
+    autocmd FileType tex set wildignore+=*/out/*
+    autocmd FileType tex setlocal wrap
+    autocmd FileType tex setlocal linebreak
+    autocmd FileType tex setlocal formatoptions+=l
+    autocmd FileType tex setlocal foldmethod=expr
+    autocmd FileType tex setlocal foldexpr=vimtex#fold#level(v:lnum)
+    autocmd FileType tex setlocal foldtext=vimtex#fold#text()
+    autocmd FileType tex setlocal spell
+    autocmd FileType tex setlocal spelllang=en,fr
+  augroup END
+
+  function! s:goyo_enter()
+    set background=light
+    set noshowmode
+    set noshowcmd
+    set nolist
+    let &showbreak=''
+    set scrolloff=999
+    Limelight
+  endfunction
+
+  function! s:goyo_leave()
+    set background=dark
+    set showmode
+    set showcmd
+    set list
+    let &showbreak='↳ '
+    set scrolloff=5
+    Limelight!
+  endfunction
+
+  autocmd! User GoyoEnter nested call <SID>goyo_enter()
+  autocmd! User GoyoLeave nested call <SID>goyo_leave()
+endif
 "}}}

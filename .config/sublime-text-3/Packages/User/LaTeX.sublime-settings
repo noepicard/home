@@ -1,5 +1,6 @@
 {
     "spell_check": true,
+    "dictionary": "Packages/Language - French - Français/fr_FR.dic",
     "tab_size": 2,
     "line_padding_top": 1,
     "line_padding_bottom": 1,

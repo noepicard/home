@@ -1,5 +1,5 @@
 # Aliases
-alias vi='nvim'
+alias vi='vimx --servername VIM'
 
 alias dotfiles='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias dotfiles-s='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME status'
