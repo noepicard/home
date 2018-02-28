@@ -1,4 +1,4 @@
-set font 'Fantasque Sans Mono 12'
+set font 'Fantasque Sans Mono 13'
 set highlight-transparency 0.25
 set abort-clear-search false
 set adjust-open "width"

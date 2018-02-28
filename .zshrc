@@ -1,12 +1,14 @@
 export ZSH=/home/npicard/.oh-my-zsh
 
-ZSH_THEME="robbyrussell"
+DEFAULT_USER="npicard"
+ZSH_THEME="wezm"
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 plugins=(
   zsh-autosuggestions
   dnf
   git
+  gitfast
   mvn
   adb
   npm

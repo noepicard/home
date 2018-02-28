@@ -1,0 +1,10 @@
+set wildignore+=*/out/*
+setlocal wrap
+setlocal linebreak
+setlocal formatoptions+=l
+setlocal foldmethod=expr
+setlocal foldexpr=vimtex#fold#level(v:lnum)
+setlocal foldtext=vimtex#fold#text()
+setlocal spell
+setlocal spelllang=en,fr
+set omnifunc=vimtex#complete#omnifunc

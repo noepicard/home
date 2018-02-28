@@ -1,5 +1,24 @@
 {
-	"dpi_scale": 1.1,
+	"auto_complete_triggers":
+	[
+		{
+			"characters": "<",
+			"selector": "text.html"
+		},
+		{
+			"characters": "\\",
+			"selector": "text.tex.latex"
+		}
+	],
+	"dpi_scale": 1.2,
+	"folder_exclude_patterns":
+	[
+		".svn",
+		".git",
+		".hg",
+		"CVS",
+		"node_modules/*"
+	],
 	"font_face": "Fantasque Sans Mono",
 	"font_size": 11,
 	"highlight_line": true,
@@ -8,7 +27,6 @@
 		"Vintage"
 	],
 	"show_encoding": true,
-	"tab_completion": false,
 	"theme": "Adaptive.sublime-theme",
 	"translate_tabs_to_spaces": true,
 	"trim_trailing_white_space_on_save": true

@@ -6,14 +6,15 @@
 	"installed_packages":
 	[
 		"AlignTab",
+		"AngularJS",
 		"BracketHighlighter",
-		"Exalt",
 		"ExpandRegion",
 		"Language - French - Français",
 		"LaTeX-cwl",
 		"LaTeXTools",
 		"Package Control",
-		"ScalaFormat",
-		"Terminal"
+		"SublimeCodeIntel",
+		"Terminal",
+		"TypeScript"
 	]
 }

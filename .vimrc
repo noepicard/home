@@ -3,13 +3,16 @@
 call plug#begin('~/.vim/plugged')
 Plug 'morhetz/gruvbox'
 Plug 'itchyny/lightline.vim'
+Plug 'scrooloose/nerdtree'
 Plug '/usr/bin/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'lifepillar/vim-mucomplete'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
+Plug 'danro/rename.vim'
 Plug 'jiangmiao/auto-pairs'
+Plug 'plasticboy/vim-markdown'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
 Plug 'lervag/vimtex'
@@ -99,6 +102,8 @@ let g:lightline.component = {
       \ 'filename': '%<%t'
       \ }
 
+let NERDTreeMinimalUI=1
+
 " Customize fzf colors to match the color scheme
 let g:fzf_colors = {
       \ 'fg':      ['fg', 'Normal'],
@@ -118,19 +123,16 @@ let g:fzf_colors = {
 let g:fzf_layout = { 'down': '~25%' }
 
 let g:mucomplete#enable_auto_at_startup = 1
-let g:mucomplete#no_mappings = 0
+let g:mucomptete#no_popup_mappings = 1
 
 let g:tex_flavor = 'latex'
 let g:vimtex_view_method = 'zathura'
+let g:vimtex_quickfix_open_on_warning = 0
 let g:vimtex_fold_enabled = 1
 let g:vimtex_complete_enabled = 1
 let g:vimtex_compiler_latexmk = {
       \ 'build_dir' : 'out'
       \ }
-if !exists('g:deoplete#omni#input_patterns')
-  let g:deoplete#omni#input_patterns = {}
-endif
-let g:deoplete#omni#input_patterns.tex = g:vimtex#re#deoplete
 let g:fastfold_savehook = 1
 let g:grammarous#disabled_rules = {
       \ '*' : ['WHITESPACE_RULE', 'EN_QUOTES']
@@ -141,7 +143,7 @@ let g:grammarous#disabled_rules = {
 " Section: Mappings {{{
 " ----------------------
 " Set size
-nnoremap <M-S> :set lines=50 columns=110<CR>
+nnoremap <M-s> :set lines=50 columns=110<CR>
 
 " Disable Arrow keys in Normal and Insert mode
 nnoremap <C-Left> :vertical resize -1<CR>
@@ -153,7 +155,6 @@ nnoremap <Down> <Nop>
 nnoremap <Left> <Nop>
 nnoremap <Right> <Nop>
 nnoremap <BS> <Nop>
-nnoremap <CR> <Nop>
 inoremap <Up> <Nop>
 inoremap <Down> <Nop>
 inoremap <Left> <Nop>
@@ -209,10 +210,10 @@ nnoremap <Leader>v :bprev!<CR>
 " Open Grammarous info window
 nnoremap <Leader>g <Plug>(grammarous-open-info-window)
 
-" Better handling of the Popup Menu
-" inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
-" inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+nnoremap <silent> <LocalLeader>lw :w<CR>:VimtexCompileSS<CR>
+
+" Toggle NERDTree
+nnoremap <C-e> :NERDTreeToggle<CR>
 
 "}}}
 
@@ -220,14 +221,14 @@ nnoremap <Leader>g <Plug>(grammarous-open-info-window)
 " ----------------------
 if has('autocmd')
   " Highlight too long lines and trailing spaces
-  augroup LongLinesHighlighting
-    autocmd!
-    autocmd WinEnter,BufEnter * call clearmatches() |
-          \ call matchadd('ErrorMsg', '\s\+$', 100) |
-    autocmd WinEnter,BufEnter * if ((&filetype !~# '\v(tex|qf|help)') && (&buftype != 'terminal')) |
-          \ call matchadd('ErrorMsg', '\%101v.', 100) |
-          \ endif
-  augroup END
+  " augroup LongLinesHighlighting
+  "   autocmd!
+  "   autocmd WinEnter,BufEnter,BufWinEnter * call clearmatches() |
+  "         \ call matchadd('ErrorMsg', '\s\+$', 100) |
+  "   autocmd WinEnter,BufEnter,BufWinEnter * if ((&filetype !~# '\v(tex|help)') &&  (&buftype !~# '\v(terminal|quickfix)')) |
+  "         \ call matchadd('ErrorMsg', '\%101v.', 100) |
+  "         \ endif
+  " augroup END
 
   augroup CursorLine
     autocmd!
@@ -254,22 +255,8 @@ if has('autocmd')
     autocmd BufWinEnter * if &l:buftype ==# 'help' | wincmd _ | endif
   augroup END
 
-  " Some configuration when editing a LaTeX file
-  augroup TexFileType
-    autocmd!
-    autocmd FileType tex set wildignore+=*/out/*
-    autocmd FileType tex setlocal wrap
-    autocmd FileType tex setlocal linebreak
-    autocmd FileType tex setlocal formatoptions+=l
-    autocmd FileType tex setlocal foldmethod=expr
-    autocmd FileType tex setlocal foldexpr=vimtex#fold#level(v:lnum)
-    autocmd FileType tex setlocal foldtext=vimtex#fold#text()
-    autocmd FileType tex setlocal spell
-    autocmd FileType tex setlocal spelllang=en,fr
-  augroup END
-
   function! s:goyo_enter()
-    set background=light
+    " set background=light
     set noshowmode
     set noshowcmd
     set nolist
@@ -279,7 +266,7 @@ if has('autocmd')
   endfunction
 
   function! s:goyo_leave()
-    set background=dark
+    " set background=dark
     set showmode
     set showcmd
     set list
