@@ -1,8 +1,8 @@
 # Aliases
 alias vi='vimx --servername VIM'
 
-alias dotfiles='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-alias dotfiles-s='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME status'
+alias dots='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias dotss='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME status'
 
 alias dbsu='dropbox status'
 alias dbso='dropbox stop'
