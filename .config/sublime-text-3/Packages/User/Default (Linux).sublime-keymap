@@ -1,5 +1,9 @@
 [
     {
+        "keys": ["ctrl+alt+t"],
+        "command": "open_terminal"
+    },
+    {
         "keys": ["control+alt+l"],
         "command": "reindent",
         "args": {"single_line": false}
@@ -9,20 +13,15 @@
         "command": "auto_complete"
     },
     {
-        "keys": ["control+super+left"],
-        "command": "move_to",
-        "args": {"to": "bol", "extend": false}
-    },
-    {
         "keys": ["control+enter"],
         "command": "move_to",
         "args": {"to": "eol", "extend": false}
     },
-    {
-        "keys": ["control+shift+enter"],
-        "command": "run_macro_file",
-        "args": {"file": "res://Packages/Default/Add Line.sublime-macro"}
-    },
+    // {
+    //     "keys": ["control+shift+enter"],
+    //     "command": "run_macro_file",
+    //     "args": {"file": "res://Packages/Default/Add Line.sublime-macro"}
+    // },
     {
         "keys" : ["control+alt+m"],
         "command": "toggle_menu"
@@ -34,24 +33,16 @@
             { "key": "auto_complete_visible" }
         ]
     },
-    {
-        "keys": ["tab"],
-        "command": "commit_completion",
-        "context": [
-            { "key": "auto_complete_visible" }
-        ]
-    },
+    // {
+    //     "keys": ["tab"],
+    //     "command": "commit_completion",
+    //     "context": [
+    //         { "key": "auto_complete_visible" }
+    //     ]
+    // },
     {
         "keys": ["control+w"],
         "command": "expand_region"
-    },
-    {
-        "keys": ["control+shift+u"],
-        "command": "expand_region",
-        "args": {"undo": true},
-        "context": [
-            { "key": "expand_region_soft_undo" }
-        ]
     },
     {
         "keys": ["control+shift+a"],
@@ -174,4 +165,5 @@
     { "keys": ["alt+ç"], "command": "select_by_index", "args": { "index": 8 } },
     { "keys": ["alt+à"], "command": "select_by_index", "args": { "index": 9 } },
     { "keys": ["control+²"], "command": "show_panel", "args": {"panel": "console", "toggle": true} },
+    { "keys": ["ctrl+à"], "command": "reset_font_size" },
 ]

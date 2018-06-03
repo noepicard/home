@@ -3,27 +3,25 @@
 // Keep in the User directory. Personalize as needed
 
 {
-
-
-// ------------------------------------------------------------------
-// General settings
-// ------------------------------------------------------------------
+	// ------------------------------------------------------------------
+	// General settings
+	// ------------------------------------------------------------------
 
 	// Cite/ref autocompletion by default is triggered after e.g. \ref{. If you don't like this,
 	// set to false. You can also use toggles: C-l,t,a,c and C-l,t,a,r.
-	"cite_auto_trigger": true,
-	"ref_auto_trigger": true,
+	"cite_auto_trigger": false,
+	"ref_auto_trigger": false,
 
 	// Fill-helper autocompletion triggered for a wide range of references to external
 	// files. You can also use toggle: C-l,t,a,f
-	"fill_auto_trigger": true,
+	"fill_auto_trigger": false,
 
 	// Fill-helper autocompletion trigger for environment names after \begin{ and \end{
 	// this requires the LaTeX-cwl package and might not have a complete list of all environments.
 	// You can also use toggle: C-l,t,a,e
-	"env_auto_trigger": true,
+	"env_auto_trigger": false,
 
-	// Fill-helper autocompletion trigger for glossary entries \gls{ and \acrfull{
+	// Fill-helper autocompletion trigger for glossary entries \gls{.} and \acrfull{.}
 	"glossary_auto_trigger": true,
 
 	// Fill-helper autocompletion trigger for tex directive values after TEX directive=
@@ -80,9 +78,9 @@
 	// valid values: "none", "part", "chapter", "section"
 	"word_count_sub_level": "none",
 
-// ------------------------------------------------------------------
-// Preview settings
-// ------------------------------------------------------------------
+	// ------------------------------------------------------------------
+	// Preview settings
+	// ------------------------------------------------------------------
 
 	// MATH LIVE PREVIEW
 
@@ -180,9 +178,9 @@
 	// thumbnail with the size 600, which is scaled down in the popup.
 	"preview_image_scale_quotient": 1,
 
-// ------------------------------------------------------------------
-// Temporary file settings
-// ------------------------------------------------------------------
+	// ------------------------------------------------------------------
+	// Temporary file settings
+	// ------------------------------------------------------------------
 	// Ends of the names of temporary files to be deleted
 	"temp_files_exts": [
 		".blg",".bbl",".aux",".log",".brf",".nlo",".out",".dvi",".ps",
@@ -193,36 +191,6 @@
 	"temp_files_ignored_folders": [
 		".git", ".svn", ".hg"
 	],
-
-// ------------------------------------------------------------------
-// Platform settings: adapt as needed for your machine
-// ------------------------------------------------------------------
-
-"osx": 	{
-		// Path used when invoking tex & friends; MUST include $PATH
-		"texpath" : "$PATH:/Library/TeX/texbin:/usr/texbin:/usr/local/bin:/opt/local/bin"
-		// Path to PDF viewer, if needed
-		// TODO think about it. Also, maybe configure it here!
-	},
-
-
-	"windows": {
-		// Path used when invoking tex & friends; "" is fine for MiKTeX
-		// For TeXlive 2011 (or other years) use
-		// "texpath" : "C:\\texlive\\2011\\bin\\win32;$PATH",
-		"texpath" : "",
-		// TeX distro: "miktex" or "texlive"
-		"distro" : "miktex",
-		// Command to invoke Sumatra. If blank, "SumatraPDF.exe" is used (it has to be on your PATH)
-		"sumatra": "",
-		// Command to invoke Sublime Text. Used if the keep_focus toggle is true.
-		// If blank, "subl.exe" or "sublime_text.exe" will be used.
-		"sublime_executable": "",
-		// how long (in seconds) to wait after the jump_to_pdf command completes
-		// before switching focus back to Sublime Text. This may need to be
-		// adjusted depending on your machine and configuration.
-		"keep_focus_delay": 0.5
-	},
 
 	"linux" : {
 		// Path used when invoking tex & friends; MUST include $PATH
@@ -250,9 +218,9 @@
 		"keep_focus_delay": 0.5
 	},
 
-// ------------------------------------------------------------------
-// Output Directory settings settings
-// ------------------------------------------------------------------
+	// ------------------------------------------------------------------
+	// Output Directory settings settings
+	// ------------------------------------------------------------------
 
 	// OPTION: "aux_directory"
 	// Specifies the auxiliary directory
@@ -288,7 +256,7 @@
 	// if you do so, however, note that the path will be interpreted
 	// relative to the location of your project file
 
-	"aux_directory": "",
+	"aux_directory": "out",
 
 	// OPTION: "output_directory"
 	// Specifies the output directory
@@ -340,9 +308,9 @@
 
 	"copy_output_on_build": false,
 
-// ------------------------------------------------------------------
-// Build engine settings
-// ------------------------------------------------------------------
+	// ------------------------------------------------------------------
+	// Build engine settings
+	// ------------------------------------------------------------------
 
 	// OPTION: "builder"
 	// Specifies a build engine
@@ -376,7 +344,7 @@
 	// NOTE: custom builders CANNOT have the same name as an existing
 	// built-in build engine (including "default")
 
-	"builder": "traditional",
+	"builder": "",
 
 	// OPTION: "builder_path"
 	// If non-empty, specifies a path to a custom builder, relative to the
@@ -401,30 +369,23 @@
 
 		// (built-ins): true shows the log of each command in the output panel
 		"display_log" : false,
+		"options": ["--shell-escape"],
 
 		// Platform-specific settings:
-		"osx" : {
-			// See README or third-party documentation
-		},
-
-		"windows" : {
-			// See README or third-party documentation
-		},
 
 		"linux" : {
 			// See README or third-party documentation
-			"command": "lualatex"
 		}
 	},
 
-// ------------------------------------------------------------------
-// Build panel and phantoms settings
-// ------------------------------------------------------------------
+	// ------------------------------------------------------------------
+	// Build panel and phantoms settings
+	// ------------------------------------------------------------------
+
 	// OPTION: "highlight_build_panel"
 	// adds syntax highlighting to the build panel so that errors, warnings, etc.
 	// show up in different colors; if set to false, the panel will be left as-is.
 	"highlight_build_panel": true,
-
 
 	// OPTION: "hide_build_panel"
 	// level to hide the build panel after the build is finished
@@ -456,9 +417,10 @@
 	// message
 	"build_finished_message_length": 2.0,
 
-// ------------------------------------------------------------------
-// Viewer settings
-// ------------------------------------------------------------------
+	// ------------------------------------------------------------------
+	// Viewer settings
+	// ------------------------------------------------------------------
+
 	// OPTION: "viewer"
 	// Specifies which viewer to use
 	// Possible values:
@@ -484,7 +446,7 @@
 	//					Windows
 	//
 	// "zathura"		uses Zathura to open the pdf
-	"viewer": "",
+	"viewer": "zathura",
 
 	// OPTION: "viewer_settings"
 	// Specify viewer-dependent settings and preferences
@@ -493,16 +455,11 @@
 	// Viewer settings can be general or OS-dependent
 	"viewer_settings": {
 		// Platform-specific settings:
-		"osx" : {
-			// See README or third-party documentation
-		},
-
-		"windows" : {
-			// See README or third-party documentation
-		},
 
 		"linux" : {
 			// See README or third-party documentation
+			"forward_sync_command": "okular --unique $pdf_file#src:$line$src_file",
+			"view_command": "okular --unique"
 		}
 	},
 
@@ -516,20 +473,21 @@
 	// if set to true, this will stop LaTeXTools from attempting to steal focus
 	// from the viewer. NOTE: This does not mean that the *viewer* won't steal
 	// the focus, only that LaTeXTools won't try to steal the focus back.
-	"disable_focus_hack": false,
+	"disable_focus_hack": true,
 
-// ------------------------------------------------------------------
-// Opening files included into the tex source code
-// ------------------------------------------------------------------
+	// ------------------------------------------------------------------
+	// Opening files included into the tex source code
+	// ------------------------------------------------------------------
 
 	// image types you use in latex
 	// these types will be used for autocompletion and
 	// opening of included images, when no extension is written
 	"image_types": ["png", "pdf", "jpg", "jpeg", "eps"],
 
-// ------------------------------------------------------------------
-// Bibliographic references
-// ------------------------------------------------------------------
+	// ------------------------------------------------------------------
+	// Bibliographic references
+	// ------------------------------------------------------------------
+
 	// OPTION: "bibliography"
 	// Either a single  bibliography plugin to use or a list of plugins
 	// which will be executed in order, stopping after the first result
@@ -580,9 +538,9 @@
 
 
 
-// ------------------------------------------------------------------
-// Cache options
-// ------------------------------------------------------------------
+	// ------------------------------------------------------------------
+	// Cache options
+	// ------------------------------------------------------------------
 
 	// settings for caches to update on load
 	// leaving these as `true` will ensure LaTeXTools pre-caches the appropriate

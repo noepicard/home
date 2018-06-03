@@ -6,15 +6,16 @@
 	"installed_packages":
 	[
 		"AlignTab",
-		"AngularJS",
 		"BracketHighlighter",
+		"Build Next",
 		"ExpandRegion",
 		"Language - French - Français",
+		"LanguageTool",
 		"LaTeX-cwl",
 		"LaTeXTools",
+		"One Dark Color Scheme",
 		"Package Control",
-		"SublimeCodeIntel",
-		"Terminal",
-		"TypeScript"
+		"SideBarEnhancements",
+		"Terminal"
 	]
 }

@@ -2,6 +2,7 @@ SYSTEM_PATH=$PATH
 unset PATH
 
 PATH=$HOME/.bin
+PATH=$PATH:$HOME/.local/bin
 
 if [[ $ANDROID_HOME ]]; then
   PATH=$PATH:$ANDROID_HOME/tools
@@ -15,6 +16,10 @@ fi
 if [[ $NPM_PACKAGES ]]; then
   PATH=$PATH:$NPM_PACKAGES/bin
   NODE_PATH=$NPM_PACKAGES/lib/node_modules:$NODE_PATH
+fi
+
+if [[ $JENA_HOME ]]; then
+  PATH=$PATH:$JENA_HOME/bin
 fi
 
 PATH=$PATH:$SYSTEM_PATH

@@ -1,19 +1,19 @@
 export ZSH=/home/npicard/.oh-my-zsh
 
 DEFAULT_USER="npicard"
-ZSH_THEME="wezm"
+ZSH_THEME="robbyrussell"
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 plugins=(
   zsh-autosuggestions
-  dnf
+  archlinux
   git
   gitfast
   mvn
-  adb
+  #adb
   npm
-  laravel5
-  composer
+  #laravel5
+  #composer
 )
 
 # Sources
@@ -26,3 +26,7 @@ unsetopt nomatch
 
 # Disable the annoying <C-s> mapping to suspend terminal
 stty -ixon
+
+zstyle ':completion:*:*:-command-:*:*' ignored-patterns '_*'
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

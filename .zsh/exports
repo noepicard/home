@@ -1,7 +1,8 @@
 export EDITOR=/usr/bin/nvim
-export JAVA_HOME=/usr/lib/jvm/java
-export M2_HOME=/usr/share/maven
-export ANDROID_HOME=$HOME/Programs/android/sdk
-#export FZF_DEFAULT_COMMAND='ag -l -g ""'
-export NODEJS_HOME=$HOME/Programs/node
+export SUDO_EDITOR=/usr/bin/nvim
+export VISUAL=/usr/bin/nvim
+export JAVA_HOME=/usr/lib/jvm/default/jre
+export M2_HOME=/opt/maven
 export NPM_PACKAGES=$HOME/.npm-packages
+export JENA_HOME=$HOME/Programs/apache-jena-3.6.0
+export NVIM_LISTEN_ADDRESS=/tmp/nvimsocket nvim

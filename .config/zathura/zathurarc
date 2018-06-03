@@ -1,5 +1,7 @@
-set font 'Fantasque Sans Mono 13'
-set highlight-transparency 0.25
+set dbus-service true
+set synctex true
+set font 'Hack 12'
+set highlight-transparency 0.10
 set abort-clear-search false
 set adjust-open "width"
 
