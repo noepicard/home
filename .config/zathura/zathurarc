@@ -2,12 +2,19 @@ set dbus-service true
 set synctex true
 set font 'Hack 12'
 set highlight-transparency 0.10
-set abort-clear-search false
-set adjust-open "width"
+set abort-clear-search true
+set adjust-open width
+set statusbar-bg "#282c34"
+
+set window-height 900
+set window-width 900
+set window-title-home-tilde true
+set window-title-basename true
+set statusbar-home-tilde true
 
 # zoom and scroll step size
-set zoom-step 20
-set scroll-step 200
+set zoom-step 15
+set scroll-step 150
 
 # copy selection to system clipboard
 set selection-clipboard clipboard
@@ -18,3 +25,4 @@ set incremental-search true
 # zoom
 map <C-i> zoom in
 map <C-o> zoom out
+

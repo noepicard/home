@@ -29,4 +29,4 @@ stty -ixon
 
 zstyle ':completion:*:*:-command-:*:*' ignored-patterns '_*'
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export _JAVA_AWT_WM_NONREPARENTING=1
